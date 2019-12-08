@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converter="clr-namespace:UsefulConvertersSample.Converters"
+             mc:Ignorable="d"
+             x:Class="UsefulConvertersSample.MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:EmptyValueToBoolConverter x:Key="EmptyValueToBoolConverter"/>
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter"/>
+            <converter:ToUpperConverter x:Key="ToUpperConverter"/>
+            <converter:ToLowerConverter x:Key="ToLowerConverter"/>
+            <converter:CollectionHasElementsConverter x:Key="CollectionHasElementsConverter"/>
+            <converter:NumberToCurrencyConverter x:Key="NumberToCurrencyConverter"/>
+            <converter:DoubleToRoundedValueConverter x:Key="DoubleToRoundedValueConverter"/>
+            <converter:RelativeDateTimeConvertor x:Key="RelativeDateTimeConvertor"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout VerticalOptions="CenterAndExpand"
+                 Padding="20,40">
+
+
+        <Entry Text="{Binding Amount, Converter={StaticResource NumberToCurrencyConverter}}"
+               Keyboard="Numeric"/>
+
+        <Label  Text="{Binding FullValAmount, Converter={StaticResource DoubleToRoundedValueConverter}}"/>
+
+        <Label Text="{Binding UserName}"
+               HorizontalOptions="Center" />
+
+        <Label  Text="{Binding UserName, Converter={StaticResource ToUpperConverter}}"
+                IsVisible="{Binding UserName, Converter={StaticResource EmptyValueToBoolConverter}}"
+                HorizontalOptions="Center" />
+
+          <Label Text="{Binding UserName}"
+               HorizontalOptions="Center" />
+
+      
+        <Label  Text="{Binding UserName, Converter={StaticResource ToLowerConverter}}"
+               HorizontalOptions="Center" />
+
+         <Label  Text="{Binding Date, Converter={StaticResource RelativeDateTimeConvertor}}"
+               HorizontalOptions="Center" />
+
+
+        <Label Text="There is not values on the list right now"
+               IsVisible="{Binding Source={x:Reference list}, Path=IsVisible, Converter={StaticResource InverseBoolConverter}}"/>
+
+        <ListView ItemsSource="{Binding Items}"
+                  x:Name="list" 
+                  IsVisible="{Binding Items, Converter={StaticResource CollectionHasElementsConverter}}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding .}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
